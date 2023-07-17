@@ -3,11 +3,11 @@ import {
   logLevelExist,
   getLogLevel,
   getLogLevelName,
-} from "../constants/LogLevels";
-import { LogT, LoggerOptionsT } from "../types/logManager";
+} from '../constants/LogLevels';
+import {LogT, LoggerOptionsT} from '../types/logManager';
 
 /**
- * Log Cluster is used to hold a collection of logs. Contains various methods for both calling, and manipulating the logs.
+ * The LogCluster class is a singleton class that is used to manipulate logs.
  * @class LogCluster
  */
 export class LogCluster {
@@ -34,7 +34,12 @@ export class LogCluster {
 
   /**
    * Add a log to the cluster.
-   * @param log
+   * @param {LogT} log
+   * @return {void}
+   * @example
+   * const logCluster = new LogCluster();
+   * logCluster.addLog({ logLevel: 'INFO', message: 'Hello World', timestamp: 123456789 });
+   * @throws {Error} - If the log level does not exist.
    */
   public addLog(log: LogT): void {
     if (!logLevelExist(log.logLevel)) {
@@ -49,7 +54,13 @@ export class LogCluster {
 
   /**
    * Get all logs.
-   * @returns LogT[]
+   * @return {LogT[]}
+   * @example
+   * const logCluster = new LogCluster();
+   * logCluster.getLogs(); // [{ id: '123456789', logLevel: 'INFO', message: 'Hello World', timestamp: 123456789 }]
+   * @example
+   * const logCluster = new LogCluster();
+   * logCluster.getLogs(); // []
    */
   public getLogs(): LogT[] {
     return this.logs;
@@ -57,8 +68,14 @@ export class LogCluster {
 
   /**
    * Get a log by its ID.
-   * @param id
-   * @returns LogT[]
+   * @param {string} id
+   * @return {LogT[]} - A log object.
+   * @example
+   * const logCluster = new LogCluster();
+   * logCluster.getLog('123456789'); // { id: '123456789', logLevel: 'INFO', message: 'Hello', timestamp: 123456789 }
+   * @example
+   * const logCluster = new LogCluster();
+   * logCluster.getLog('123456789'); // undefined
    */
   public getLog(id: string): LogT {
     return this.logs.find((log) => log.id === id);
@@ -66,7 +83,10 @@ export class LogCluster {
 
   /**
    * Get the most recent added log.
-   * @returns LogT
+   * @return {LogT} - A log object.
+   * @example
+   * const logCluster = new LogCluster();
+   * logCluster.getRecentLog(); // { id: '123456789', logLevel: 'INFO', message: 'Hello World', timestamp: 123456789 }
    */
   public getRecentLog(): LogT {
     return this.logs[this.logs.length - 1];
@@ -75,10 +95,13 @@ export class LogCluster {
   /**
    * Generates a random name for the log cluster.
    * @deprecated
-   * @returns string
+   * @return {string} - A string representing the name of the log cluster.
+   * @example
+   * const logCluster = new LogCluster();
+   * logCluster.generateRandomName(); // LogCluster-123456789
    */
   private generateRandomName(): string {
-    return "LogCluster-" + generateUniqueID();
+    return 'LogCluster-' + generateUniqueID();
   }
 
   public generateLogData(message: string, options?: LoggerOptionsT): LogT {
@@ -88,7 +111,7 @@ export class LogCluster {
 
     const log: LogT = {
       id: generateUniqueID(),
-      logLevel: options.logLevel || "INFO",
+      logLevel: options.logLevel || 'INFO',
       message: message,
       timestamp: Date.now(),
     };

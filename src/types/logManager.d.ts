@@ -1,4 +1,4 @@
-import { LOG_LEVELS } from "../constants/LogLevels";
+import {LOG_LEVELS} from '../constants/LogLevels';
 
 export type LogLevelT = typeof LOG_LEVELS;
 export type LogLevelKeyT = keyof LogLevelT;
@@ -9,7 +9,7 @@ export interface LoggerOptionsT {
   logLevel?: LogLevelValueT;
 }
 
-/*interface LogT {
+/* interface LogT {
   logLevel: LogLevelKeyT | LogLevelValueT;
   message: string;
   timestamp: number;

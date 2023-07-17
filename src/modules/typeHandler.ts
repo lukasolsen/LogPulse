@@ -5,11 +5,11 @@ import {
   ColorModifiersT,
   TEXT_MODIFIERS,
   turnTextToColorConsoleT,
-} from "../constants/ColorControls";
+} from '../constants/ColorControls';
 
-import { LogT, LogLevelUsageT } from "../types/logManager";
+import {LogT, LogLevelUsageT} from '../types/logManager';
 
-import { getLogLevelName } from "../constants/LogLevels";
+import {getLogLevelName} from '../constants/LogLevels';
 
 export class ColorManager {
   private colors: ColorT[];
@@ -19,7 +19,7 @@ export class ColorManager {
     this.colors = [];
 
     Object.keys(PREDEFINED_COLORS).forEach((color) => {
-      this.colors.push({ name: color, hex: PREDEFINED_COLORS[color] });
+      this.colors.push({name: color, hex: PREDEFINED_COLORS[color]});
     });
   }
 
@@ -31,58 +31,39 @@ export class ColorManager {
   }
 
   /**
-   *
-   * @param name
-   * @param hex
-   * @description Adds a color to the color manager.
+   * The addColor function adds a new color to an array of colors if the hex value is valid and the
+   * name is not already taken.
+   * @param {string} name - A string representing the name of the color to be added.
+   * @param {HexT} [hex] - The `hex` parameter is an optional parameter of type `HexT`. It represents
+   * the hexadecimal color value that will be associated with the color name. If a valid `hex` value is
+   * provided, it will be used to create a new color object and add it to the `colors` array.
+   * @return {void}
    * @example
    * Colors.getInstance().addColor("red", "#FF0000");
-   * @memberof Colors
-   * @instance
-   * @method addColor
-   * @public
-   * @since 1.0.0
-   * @version 1.0.0
-   * @throws {Error} If the hex is not a valid hex.
-   * @throws {Error} If the name is already taken.
-   * @throws {Error} If the hex is not a valid hex.
-   * @throws {Error} If the name is already taken.
-   * @throws {Error} If the hex is not a valid hex.
-   * @throws {Error} If the name is already taken.
-   *
    */
   public addColor(name: string, hex?: HexT): void {
-    //Check if the hex is valid
+    // Check if the hex is valid
     if (!this.isValidHex(hex)) {
       throw new Error(`Hex ${hex} is not a valid hex.`);
     }
 
-    //Check if the name is already taken
+    // Check if the name is already taken
     if (this.colors.find((color) => color.name === name)) {
       throw new Error(`Color name ${name} is already taken.`);
     }
 
     if (hex) {
-      this.colors.push({ name, hex });
+      this.colors.push({name, hex});
     }
   }
 
   /**
-   *
-   * @param name
-   * @returns ColorT
-   * @description Returns a color by name.
+   * The function `getColor` takes a name as input and returns the corresponding color object from an
+   * array of colors.
+   * @param {string} name - A string representing the name of the color to search for.
+   * @return {ColorT} a ColorT object that matches the given name.
    * @example
-   * const color = Colors.getInstance().getColor("red");
-   * console.log(color);
-   *
-   * // { name: 'red', hex: '#FF0000' }
-   * @memberof Colors
-   * @instance
-   * @method getColor
-   * @public
-   * @since 1.0.0
-   * @version 1.0.0
+   * Colors.getInstance().getColor("red");
    */
   public getColor(name: string): ColorT {
     return this.colors.find(
@@ -91,36 +72,42 @@ export class ColorManager {
   }
 
   /**
-   *
-   * @returns ColorT[]
-   * @description Returns all colors.
+   * The function "getColors" returns an array of ColorT objects.
+   * @return {ColorT} The `getColors()` function is returning an array of `ColorT` objects.
    * @example
-   * const colors = Colors.getInstance().getColors();
-   * console.log(colors);
-   * // [
-   * //   { name: 'red', hex: '#FF0000' },
-   * //   { name: 'green', hex: '#00FF00' },
-   * //   { name: 'blue', hex: '#0000FF' },
-   * //   { name: 'yellow', hex: '#FFFF00' },
-   * //   { name: 'cyan', hex: '#00FFFF' },
-   * //   { name: 'magenta', hex: '#FF00FF' },
-   * // ]
-   * @memberof Colors
-   * @instance
-   * @method getColors
-   * @public
-   * @since 1.0.0
-   * @version 1.0.0
-   *
+   * Colors.getInstance().getColors();
+   * // returns [{name: "red", hex: "#FF0000"}, {name: "blue", hex: "#0000FF"}]
    */
   public getColors(): ColorT[] {
     return this.colors;
   }
 
+  /**
+   * The function checks if a given string is a valid hexadecimal color code.
+   * @param {string} hex - The `hex` parameter is a string representing a hexadecimal color code.
+   * @return {boolean} The function returns a boolean value. If the `hex` parameter is a valid
+   * hexadecimal color code, the function returns true. Otherwise, it returns false.
+   * @example
+   * Colors.getInstance().isValidHex("#FF0000");
+   * // returns true
+   * Colors.getInstance().isValidHex("FALSE");
+   * // returns false
+   */
   public isValidHex(hex: string): boolean {
     return /^#([0-9A-F]{3}){1,2}$/i.test(hex);
   }
 
+  /**
+   * The function checks if a given name is a valid predefined color.
+   * @param {string} name - The name parameter is a string that represents the name of a color.
+   * @return {boolean} The function returns a boolean value. If the name is a valid predefined color,
+   * the function returns true. Otherwise, it returns false.
+   * @example
+   * Colors.getInstance().isValidPredefinedColor("red");
+   * // returns true
+   * Colors.getInstance().isValidPredefinedColor("purple");
+   * // returns false
+   */
   public isValidPredefinedColor(name: string): boolean {
     return Object.keys(PREDEFINED_COLORS).includes(name);
   }
@@ -132,9 +119,9 @@ export class ModifierManager {
   constructor() {
     this.modifiers = [];
 
-    //Add predefined modifiers
+    // Add predefined modifiers
     Object.keys(TEXT_MODIFIERS).forEach((modifier) => {
-      this.modifiers.push({ func: TEXT_MODIFIERS[modifier] });
+      this.modifiers.push({func: TEXT_MODIFIERS[modifier]});
     });
   }
 
@@ -143,7 +130,7 @@ export class ModifierManager {
       throw new Error(`Modifier name ${name} is already taken.`);
     }
 
-    this.modifiers.push({ name, style });
+    this.modifiers.push({name, style});
   }
 
   public getModifiers(): ColorModifiersT[] {
@@ -173,7 +160,7 @@ export class FormatManager {
 
   constructor() {
     const DEFAULT_FORMAT =
-      "%{silver}[%{teal}%{timestamp}%{silver}] %{silver}[%{uppercase}%{logLevel}%{silver}]%{reset} %{message}";
+      '%{silver}[%{teal}%{timestamp}%{silver}] %{silver}[%{uppercase}%{logLevel}%{silver}]%{reset} %{message}';
     this.format = DEFAULT_FORMAT;
   }
 
@@ -203,18 +190,17 @@ export class FormatManager {
         /%\{message\}/g,
         getLogLevelName(log.message as LogLevelUsageT).toString()
       );
-
     return message;
   }
 
   private getCurrentTimestamp(): string {
     const now = new Date();
-    const year = now.getFullYear().toString().padStart(4, "0");
-    const month = (now.getMonth() + 1).toString().padStart(2, "0");
-    const day = now.getDate().toString().padStart(2, "0");
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const seconds = now.getSeconds().toString().padStart(2, "0");
+    const year = now.getFullYear().toString().padStart(4, '0');
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
 
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
@@ -228,21 +214,20 @@ export function turnTextToColorConsole(text: string): turnTextToColorConsoleT {
   const colorRegex = /%\{([a-zA-Z]+)\}/g;
   let match;
   let lastIndex = 0;
-  let result = { text: "", colors: [] };
+  const result = {text: '', colors: []};
 
   while ((match = colorRegex.exec(text)) !== null) {
     const color = match[1].toLowerCase();
-    const colorStyle = PREDEFINED_COLORS[color] || TEXT_MODIFIERS[color] || "";
+    const colorStyle = PREDEFINED_COLORS[color] || TEXT_MODIFIERS[color] || '';
     const startIndex = match.index + match[0].length;
-    const endIndex = colorRegex.lastIndex - match[0].length;
 
-    //result += `%c${text.substring(lastIndex, startIndex)}`;
+    // result += `%c${text.substring(lastIndex, startIndex)}`;
     result.text += text.substring(lastIndex, startIndex - match[0].length);
-    result.text += `%c`; //${text.substring(startIndex, endIndex)}`;
+    result.text += `%c`; // ${text.substring(startIndex, endIndex)}`;
 
-    //check if the color is a color, or a modifier
+    // check if the color is a color, or a modifier
     if (this.colorManager.isValidPredefinedColor(color)) {
-      result.colors.push("color: " + colorStyle);
+      result.colors.push('color: ' + colorStyle);
     } else {
       result.colors.push(colorStyle);
     }
@@ -260,6 +245,6 @@ export function formatText(log: LogT): string {
 
 export function formatTextAllDependencies(log: LogT): turnTextToColorConsoleT {
   const format = FormatManager.getInstance().formatMessage(log);
-  const { text, colors } = turnTextToColorConsole(format);
-  return { text, colors };
+  const {text, colors} = turnTextToColorConsole(format);
+  return {text, colors};
 }

@@ -1,16 +1,10 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "outDir": "dist",
-    "module": "CommonJS",
-    "target": "ES5",
-    "lib": ["ES6", "DOM", "ESNext", "ES2023"],
-    "esModuleInterop": true,
-    "noEmit": true,
-    "skipLibCheck": true,
-    "noUncheckedIndexedAccess": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+    "sourceMap": true,
+    "outDir": "./dist/",
+    "module": "es6",
+    "target": "es5",
+    "allowJs": true,
+    "moduleResolution": "Bundler"
+  }
 }

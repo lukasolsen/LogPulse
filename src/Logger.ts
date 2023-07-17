@@ -1,11 +1,6 @@
-import { LogCluster } from "./modules/logCluster";
-import {
-  formatTextAllDependencies,
-  FormatManager,
-  ColorManager,
-  ModifierManager,
-} from "./modules/typeHandler";
-import { LoggerOptionsT } from "./types/logManager";
+import {LogCluster} from './modules/logCluster';
+import {formatTextAllDependencies} from './modules/typeHandler';
+import {LoggerOptionsT} from './types/logManager';
 
 export default class Logger {
   private logCluster: LogCluster;
@@ -18,7 +13,7 @@ export default class Logger {
     options = options || {};
 
     const log = this.logCluster.generateLogData(message, options);
-    const { text, colors } = formatTextAllDependencies(log);
+    const {text, colors} = formatTextAllDependencies(log);
     console.log(text, ...colors);
   }
 }
