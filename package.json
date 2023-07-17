@@ -1,0 +1,20 @@
+{
+  "name": "logify",
+  "version": "0.0.1",
+  "description": "\"Logify\" is a comprehensive and customizable log management system designed to streamline logging operations in software applications. It provides a robust and flexible logging solution that enables developers to efficiently capture, analyze, and manage log messages throughout their projects. With Logify, you can enhance your application's debugging, monitoring, and analysis capabilities by seamlessly integrating a powerful logging system into your codebase.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify",
+    "lint": "tsc"
+  },
+  "author": "Lukas Olsen",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/core": "^1.3.69",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6"
+  }
+}
