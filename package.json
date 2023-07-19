@@ -2,7 +2,8 @@
   "name": "Logify",
   "version": "1.0.0",
   "description": "A simple logging library",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "build-npm": "tsc",
