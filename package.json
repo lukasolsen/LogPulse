@@ -28,7 +28,6 @@
   },
   "auto-changelog": {
     "output": "CHANGELOG.md",
-    "template": "templates/changelog-template.hbs",
     "remote": "Logify",
     "handlebarsSetup": "templates/setup.js",
     "issueUrl": "https://www.github.com/lukasolsen/logify/issues/{id}",
