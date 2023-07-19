@@ -1,19 +1,46 @@
 import {LogCluster} from './modules/logCluster';
-import {formatTextAllDependencies} from './modules/typeHandler';
-import {LoggerOptionsT} from './types/logManager';
+import {ConsoleTransport, LogLocation} from './modules/logLocation';
+
+import {formatTextAllDependencies} from './modules/log-modifier';
+import {
+  LogLevelValueType,
+  LogOptions,
+  LoggerOptionsType,
+} from './types/logManager';
 
 export default class Logger {
   private logCluster: LogCluster;
+  private logLocations: LogLocation[];
+  logLevel: LogLevelValueType;
 
-  constructor() {
-    this.logCluster = LogCluster.getInstance();
+  constructor(options?: LoggerOptionsType) {
+    this.logCluster = new LogCluster();
+    this.logLocations = options?.logLocations
+      ? Array.isArray(options.logLocations)
+        ? options.logLocations
+        : [options.logLocations]
+      : [new ConsoleTransport()];
+
+    this.logCluster.addLogLocation(this.logLocations);
   }
 
-  public log(message: string, options?: LoggerOptionsT): void {
-    options = options || {};
+  public log(message: string, logOptions?: LogOptions): void {
+    this.logCluster.log(message, logOptions);
+  }
 
-    const log = this.logCluster.generateLogData(message, options);
-    const {text, colors} = formatTextAllDependencies(log);
-    console.log(text, ...colors);
+  public addLogLocation(logLocation: LogLocation): void {
+    this.logCluster.addLogLocation(logLocation);
+  }
+
+  public configure(options: LoggerOptionsType): void {
+    this.logLocations = Array.isArray(options.logLocations)
+      ? options.logLocations
+      : [options.logLocations];
+
+    this.logLevel = options.logLevel as LogLevelValueType;
+  }
+
+  public setDefaultLogCluster(logCluster: LogCluster): void {
+    this.logCluster = logCluster;
   }
 }

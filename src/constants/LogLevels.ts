@@ -1,4 +1,4 @@
-import {LogLevelUsageT, LogLevelValueT} from '../types/logManager';
+import {LogLevelUsageType, LogLevelValueType} from '../types/logManager';
 
 export const LOG_LEVELS = {
   DEBUG: 0,
@@ -16,16 +16,19 @@ export function getLogLevels(): typeof LOG_LEVELS {
 }
 
 export function getLogLevel(
-  level: LogLevelUsageT,
+  level: LogLevelUsageType
 ): (typeof LOG_LEVELS)[LogLevelKeys] {
   return LOG_LEVELS[level as LogLevelKeys];
 }
 
-export function addLogLevel(name: LogLevelUsageT, level: LogLevelUsageT): void {
-  if (logLevelExist(name.toString().toUpperCase() as LogLevelUsageT)) {
+export function addLogLevel(
+  name: LogLevelUsageType,
+  level: LogLevelUsageType
+): void {
+  if (logLevelExist(name.toString().toUpperCase() as LogLevelUsageType)) {
     throw new Error(`Log level ${name} already exists.`);
   }
-  if (logLevelExist(level as LogLevelUsageT)) {
+  if (logLevelExist(level as LogLevelUsageType)) {
     throw new Error(`Log level ${level} already exists.`);
   }
 
@@ -34,13 +37,13 @@ export function addLogLevel(name: LogLevelUsageT, level: LogLevelUsageT): void {
   }
 }
 
-export function getLogLevelName(level: LogLevelUsageT): LogLevelValueT {
+export function getLogLevelName(level: LogLevelUsageType): LogLevelValueType {
   return typeof level === 'number'
-    ? (Object.keys(LOG_LEVELS)[level] as unknown as LogLevelValueT)
-    : (level as unknown as LogLevelValueT);
+    ? (Object.keys(LOG_LEVELS)[level] as unknown as LogLevelValueType)
+    : (level as unknown as LogLevelValueType);
 }
 
-export function logLevelExist(level: LogLevelUsageT): boolean {
+export function logLevelExist(level: LogLevelUsageType): boolean {
   return typeof level === 'number'
     ? Object.values(LOG_LEVELS).includes(level)
     : Object.keys(LOG_LEVELS).includes(level.toString().toUpperCase());

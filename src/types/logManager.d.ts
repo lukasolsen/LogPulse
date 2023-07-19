@@ -1,23 +1,32 @@
 import {LOG_LEVELS} from '../constants/LogLevels';
+import {LogLocation} from '../modules/logLocation';
 
-export type LogLevelT = typeof LOG_LEVELS;
-export type LogLevelKeyT = keyof LogLevelT;
-export type LogLevelValueT = LogLevelT[LogLevelKeyT];
-export type LogLevelUsageT = LogLevelT | LogLevelKeyT | LogLevelValueT;
+export type LogLevelType = typeof LOG_LEVELS;
+export type LogLevelKeyType = keyof LogLevelType;
+export type LogLevelValueType = LogLevelType[LogLevelKeyType];
+export type LogLevelUsageType =
+  | LogLevelType
+  | LogLevelKeyType
+  | LogLevelValueType;
 
-export interface LoggerOptionsT {
-  logLevel?: LogLevelValueT;
+export interface LoggerOptionsType {
+  logLevel: LogLevelUsageType;
+  logLocations: LogLocation | LogLocation[];
 }
 
-/* interface LogT {
+export interface LogOptions {
+  logLevel?: LogLevelValueType;
+}
+
+/* interface LogType {
   logLevel: LogLevelKeyT | LogLevelValueT;
   message: string;
   timestamp: number;
 }*/
 
-export type LogT = {
+export type LogType = {
   id: string;
-  logLevel: LogLevelUsageT;
+  logLevel: LogLevelUsageType;
   message: string;
   timestamp: number;
 };

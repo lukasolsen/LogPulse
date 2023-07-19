@@ -1,9 +1,26 @@
 import Logger from './Logger';
+import {LogCluster} from './modules/logCluster';
+import {ConsoleTransport, FileTransport} from './modules/logLocation';
+import {ColorManager} from './modules/log-modifiers';
+import {LOG_LEVELS} from './constants/LogLevels';
+/*
+const logger = new Logger();
 
-declare global {
-  interface Window {
-    Logger: typeof Logger;
-  }
-}
+logger.configure({
+  logLevel: LOG_LEVELS.FATAL,
+  logLocations: [new ConsoleTransport()],
+});
 
-export default Logger;
+const newLogCluster = new LogCluster();
+
+logger.log('Sending message from default log cluster.');
+
+logger.setDefaultLogCluster(newLogCluster);
+logger.addLogLocation(new ConsoleTransport());
+
+logger.log('Sending message from new log cluster.');
+*/
+
+const Logify = new Logger();
+
+export {Logify, ConsoleTransport, FileTransport, ColorManager, LogCluster};
