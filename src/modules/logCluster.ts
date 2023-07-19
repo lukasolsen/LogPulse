@@ -4,10 +4,16 @@ import {
   getLogLevel,
   getLogLevelName,
 } from '../constants/LogLevels';
-import {LogType, LogOptions} from '../types/logManager';
+import {
+  LogType,
+  LogOptions,
+  LogLevelValueType,
+  LogLevelUsageType,
+} from '../types/logManager';
 import {formatTextAllDependencies} from './log-modifier';
 import {ConsoleTransport, LogLocation, transport} from './logLocation';
 import {logClusterOptions} from '../types/logCluster';
+import {FormatManager} from './log-modifiers';
 
 /**
  * A class that represents a log cluster.
@@ -69,10 +75,14 @@ export class LogCluster {
     }
   }
 
-  public log(message: string, options?: LogOptions): void {
+  public log(
+    logLevel: LogLevelUsageType,
+    message: string,
+    options?: LogOptions
+  ): void {
     options = options || {};
 
-    const log = this.generateLogData(message, options);
+    const log = this.generateLogData(logLevel, message, options);
     const {text, colors} = formatTextAllDependencies(log);
 
     for (const logLocations of this.logLocations) {
@@ -82,14 +92,22 @@ export class LogCluster {
     //console.log(text, ...colors);
   }
 
-  public generateLogData(message: string, options?: LogOptions): LogType {
+  public setFormat(format: string): void {
+    FormatManager.getInstance().setFormat(format);
+  }
+
+  private generateLogData(
+    logLevel: LogLevelUsageType,
+    message: string,
+    options?: LogOptions
+  ): LogType {
     options = options || {};
 
-    options.logLevel = getLogLevelName(options.logLevel) || getLogLevelName(1);
+    logLevel = getLogLevelName(logLevel) || getLogLevelName(1);
 
     const log: LogType = {
       id: generateUniqueID(),
-      logLevel: options.logLevel || 'INFO',
+      logLevel: logLevel || 'INFO',
       message: message,
       timestamp: Date.now(),
     };

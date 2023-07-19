@@ -16,9 +16,7 @@ export interface LoggerOptionsType {
   logCluster?: LogCluster;
 }
 
-export interface LogOptions {
-  logLevel?: LogLevelValueType;
-}
+export interface LogOptions {}
 
 /* interface LogType {
   logLevel: LogLevelKeyT | LogLevelValueT;

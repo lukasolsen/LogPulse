@@ -1,17 +1,29 @@
 import {LogCluster} from './modules/logCluster';
 import {ConsoleTransport, LogLocation} from './modules/logLocation';
+import {LOG_LEVELS} from './constants/LogLevels';
 
-import {formatTextAllDependencies} from './modules/log-modifier';
 import {
+  LogLevelUsageType,
   LogLevelValueType,
   LogOptions,
   LoggerOptionsType,
 } from './types/logManager';
 
-export default class Logger {
+export interface ILogger {
+  configure(options: LoggerOptionsType): void;
+  log(
+    logLevel: LogLevelUsageType,
+    message: string,
+    logOptions?: LogOptions
+  ): void;
+  addLogLocation(logLocation: LogLocation): void;
+  setDefaultLogCluster(logCluster: LogCluster): void;
+}
+
+export class Logger implements ILogger {
   private logCluster: LogCluster;
   private logLocations: LogLocation[];
-  logLevel: LogLevelValueType;
+  private logLevel: LogLevelValueType;
 
   constructor(options?: LoggerOptionsType) {
     this.logCluster = options?.logCluster || new LogCluster();
@@ -22,10 +34,22 @@ export default class Logger {
       : [new ConsoleTransport()];
 
     this.logCluster.addLogLocation(this.logLocations);
+    Object.keys(LOG_LEVELS).forEach((logLevel) => {
+      (this as any)[logLevel.toLowerCase()] = (
+        message: string,
+        logOptions?: LogOptions
+      ) => {
+        this.log(logLevel as LogLevelUsageType, message, logOptions);
+      };
+    });
   }
 
-  public log(message: string, logOptions?: LogOptions): void {
-    this.logCluster.log(message, logOptions);
+  public log(
+    logLevel: LogLevelUsageType,
+    message: string,
+    logOptions?: LogOptions
+  ): void {
+    this.logCluster.log(logLevel, message, logOptions);
   }
 
   public addLogLocation(logLocation: LogLocation): void {
@@ -43,4 +67,10 @@ export default class Logger {
   public setDefaultLogCluster(logCluster: LogCluster): void {
     this.logCluster = logCluster;
   }
+
+  public setFormat(format: string): void {
+    this.logCluster.setFormat(format);
+  }
 }
+
+export default Logger;

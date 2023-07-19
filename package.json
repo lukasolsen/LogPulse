@@ -2,15 +2,15 @@
   "name": "Logify",
   "version": "1.0.0",
   "description": "A simple logging library",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/logify.js",
+  "types": "dist/logify.d.ts",
   "scripts": {
     "build": "tsc",
     "build-npm": "tsc",
     "build-website": "webpack --mode production",
     "dev-website": "webpack serve --mode development",
-    "dev": "nodemon --watch src/**/*.ts --exec ts-node ./src/index.ts",
-    "start": "ts-node ./src/index.ts"
+    "dev": "nodemon --watch src/**/*.ts --exec ts-node ./src/logify.ts",
+    "start": "ts-node ./src/logify.ts"
   },
   "author": "Lukas Olsen",
   "license": "MIT",
