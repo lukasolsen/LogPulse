@@ -1,4 +1,5 @@
 import {LOG_LEVELS} from '../constants/LogLevels';
+import {LogCluster} from '../modules/logCluster';
 import {LogLocation} from '../modules/logLocation';
 
 export type LogLevelType = typeof LOG_LEVELS;
@@ -10,8 +11,9 @@ export type LogLevelUsageType =
   | LogLevelValueType;
 
 export interface LoggerOptionsType {
-  logLevel: LogLevelUsageType;
-  logLocations: LogLocation | LogLocation[];
+  logLevel?: LogLevelUsageType;
+  logLocations?: LogLocation | LogLocation[];
+  logCluster?: LogCluster;
 }
 
 export interface LogOptions {

@@ -6,7 +6,8 @@ import {
 } from '../constants/LogLevels';
 import {LogType, LogOptions} from '../types/logManager';
 import {formatTextAllDependencies} from './log-modifier';
-import {LogLocation, transport} from './logLocation';
+import {ConsoleTransport, LogLocation, transport} from './logLocation';
+import {logClusterOptions} from '../types/logCluster';
 
 /**
  * A class that represents a log cluster.
@@ -17,10 +18,15 @@ export class LogCluster {
   private logClusterID: string;
   private logLocations: LogLocation[];
 
-  constructor(logClusterName?: string) {
-    this.logClusterName = logClusterName || this.generateRandomName();
+  constructor(logClusterOptions?: logClusterOptions) {
+    this.logClusterName =
+      logClusterOptions?.logClusterName || this.generateRandomName();
     this.logClusterID = generateUniqueID();
-    this.logLocations = [];
+    this.logLocations = Array.isArray(logClusterOptions?.logLocations)
+      ? logClusterOptions?.logLocations
+      : logClusterOptions?.logLocations
+      ? [logClusterOptions.logLocations]
+      : [];
   }
 
   /**

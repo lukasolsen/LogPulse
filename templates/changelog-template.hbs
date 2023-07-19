@@ -1,0 +1,35 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+{{#each releases}}
+## {{checkTitle title}} - {{isoDate}}
+
+{{#if merges.length}}
+### Merges
+{{#each merges}}
+- {{message}} [PR {{id}}]({{href}})
+{{/each}}
+{{/if}}
+
+{{#if fixes.length}}
+### Fixes
+{{#each fixes}}
+- {{commit.subject}} [Issue {{id}}]({{href}})
+{{/each}}
+{{/if}}
+
+{{#if commits.length}}
+### Commits
+{{#each commits}}
+- {{subject}} [{{shorthash}}]({{href}})
+{{/each}}
+{{/if}}
+
+{{#if issues.length}}
+### Issues
+{{#each pullRequests}}
+- {{title}} [PR {{id}}]({{href}})
+{{/each}}
+{{/if}}
+{{/each}}

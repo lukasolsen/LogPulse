@@ -14,7 +14,7 @@ export default class Logger {
   logLevel: LogLevelValueType;
 
   constructor(options?: LoggerOptionsType) {
-    this.logCluster = new LogCluster();
+    this.logCluster = options?.logCluster || new LogCluster();
     this.logLocations = options?.logLocations
       ? Array.isArray(options.logLocations)
         ? options.logLocations
