@@ -1,119 +1,178 @@
-import {
-  generateUniqueID,
-  logLevelExist,
-  getLogLevel,
-  getLogLevelName,
-} from '../constants/LogLevels';
-import {
-  LogType,
-  LogOptions,
-  LogLevelValueType,
-  LogLevelUsageType,
-} from '../types/logManager';
+import {ConsoleTransport, LogLocation} from './logLocation';
+import {LogOptions, LogType, LoggerOptionsType} from '../types/logManager';
+import {LevelUsageType} from '../types/logManager';
+import {LOG_LEVELS, generateUniqueID, getLevelName} from '../constants/Levels';
 import {formatTextAllDependencies} from './log-modifier';
-import {ConsoleTransport, LogLocation, transport} from './logLocation';
-import {logClusterOptions} from '../types/logCluster';
-import {FormatManager} from './log-modifiers';
 
-/**
- * A class that represents a log cluster.
- * @class LogCluster
- */
+class LogFilterManager {
+  private filters: ((log: LogType, ...args: any[]) => boolean)[];
+  private defaultLogOptions: LogOptions;
+
+  constructor(defaultLogOptions: LogOptions) {
+    this.filters = [];
+    this.defaultLogOptions = defaultLogOptions;
+  }
+
+  public addFilter(filter: (log: LogType, ...args: any[]) => boolean): void {
+    this.filters.push(filter);
+  }
+
+  public applyFilters(log: LogType, ...args: any[]): boolean {
+    return this.filters.every((filter) => filter(log, ...args));
+  }
+
+  public useFilter(log: LogType, ...args: any[]): boolean {
+    const filters = this.applyFilters(log, ...args);
+
+    return filters;
+  }
+}
+
 export class LogCluster {
-  private logClusterName: string;
-  private logClusterID: string;
   private logLocations: LogLocation[];
+  private defaultLogInformation: LogInformation;
+  private levelFilter: LevelUsageType;
+  private filterManager: LogFilterManager;
 
-  constructor(logClusterOptions?: logClusterOptions) {
-    this.logClusterName =
-      logClusterOptions?.logClusterName || this.generateRandomName();
-    this.logClusterID = generateUniqueID();
-    this.logLocations = Array.isArray(logClusterOptions?.logLocations)
-      ? logClusterOptions?.logLocations
-      : logClusterOptions?.logLocations
-      ? [logClusterOptions.logLocations]
-      : [];
+  constructor(options?: LoggerOptionsType) {
+    this.logLocations = options?.logLocations || [new ConsoleTransport()];
+    this.defaultLogInformation = {
+      level: options?.defaultLogLevel || LOG_LEVELS.INFO,
+    };
+    this.levelFilter = options?.levelFilter ?? LOG_LEVELS.INFO;
+    this.filterManager = new LogFilterManager(this.defaultLogInformation || {});
   }
 
-  /**
-   * Add a log to the cluster.
-   * @param {LogType} log
-   * @return {void}
-   * @example
-   * const logCluster = new LogCluster();
-   * logCluster.addLog({ logLevel: 'INFO', message: 'Hello World', timestamp: 123456789 });
-   * @throws {Error} - If the log level does not exist.
-   */
-  private addLog(logLocation: LogLocation, log: LogType): void {
-    if (!logLevelExist(log.logLevel)) {
-      throw new Error(`Log level ${log.logLevel} does not exist.`);
-    }
+  public log(message: string, logOptions?: LogOptions, ...args: any[]): void {
+    logOptions = logOptions || {};
 
-    const logLevel = getLogLevel(log.logLevel);
-    log.logLevel = logLevel;
+    // Type assertion to ensure logOptions.level has the correct type
+    logOptions.level =
+      logOptions.level || (this.defaultLogInformation.level as LevelUsageType);
 
-    logLocation.addLog(log);
-  }
+    if (this.checkLevelFilter(logOptions.level)) return;
 
-  /**
-   * Generates a random name for the log cluster.
-   * @deprecated
-   * @return {string} - A string representing the name of the log cluster.
-   * @example
-   * const logCluster = new LogCluster();
-   * logCluster.generateRandomName(); // LogCluster-123456789
-   */
-  private generateRandomName(): string {
-    return 'LogCluster-' + generateUniqueID();
-  }
-
-  public addLogLocation(logLocations: LogLocation | LogLocation[]) {
-    if (Array.isArray(logLocations)) {
-      this.logLocations.push(...logLocations);
-    } else {
-      this.logLocations.push(logLocations);
-    }
-  }
-
-  public log(
-    logLevel: LogLevelUsageType,
-    message: string,
-    options?: LogOptions
-  ): void {
-    options = options || {};
-
-    const log = this.generateLogData(logLevel, message, options);
+    const log = this.generateLogData(
+      logOptions.level,
+      message,
+      logOptions,
+      ...args
+    );
     const {text, colors} = formatTextAllDependencies(log);
+    if (!this.filterManager.useFilter(log, ...args)) return;
 
-    for (const logLocations of this.logLocations) {
-      this.addLog(this.logLocations[0], log);
-      logLocations.log(text, colors);
+    this.logLocations.forEach((logLocation) => {
+      logLocation.log(text, colors);
+      logLocation.addLog(log);
+    });
+  }
+
+  public addLogLocation(logLocation: LogLocation | LogLocation[]): void {
+    if (Array.isArray(logLocation)) {
+      this.logLocations.push(...logLocation);
+    } else {
+      this.logLocations.push(logLocation);
     }
-    //console.log(text, ...colors);
+  }
+
+  public configure(options: LoggerOptionsType): void {
+    this.logLocations = Array.isArray(options.logLocations)
+      ? options.logLocations
+      : [options.logLocations];
+
+    this.defaultLogInformation.level =
+      options.defaultLogLevel || LOG_LEVELS.INFO;
+
+    // Set the level filter based on the allowDebug property if provided
+    this.levelFilter = options.allowDebug ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO;
+  }
+
+  private checkLevelFilter(level: LevelUsageType): boolean {
+    return level > this.levelFilter;
   }
 
   public setFormat(format: string): void {
-    FormatManager.getInstance().setFormat(format);
+    // Implement the setFormat logic here or delegate it to LogLocation(s)
+  }
+
+  public addLogFilter(filter: (log: LogType, ...args: any[]) => boolean): void {
+    this.filterManager.addFilter(filter);
   }
 
   private generateLogData(
-    logLevel: LogLevelUsageType,
+    level: LevelUsageType,
     message: string,
-    options?: LogOptions
+    options?: LogOptions,
+    ...args: any[]
   ): LogType {
     options = options || {};
+    level = getLevelName(level);
 
-    logLevel = getLogLevelName(logLevel) || getLogLevelName(1);
+    let stringified = JSON.stringify(args);
+    stringified = stringified.replace(/"/g, '');
+    stringified = stringified.replace(stringified.charAt(0), '');
+    stringified = stringified.replace(
+      stringified.charAt(stringified.length - 1),
+      ''
+    );
+
+    const mes = message + ' ' + stringified;
 
     const log: LogType = {
       id: generateUniqueID(),
-      logLevel: logLevel || 'INFO',
-      message: message,
+      level: level,
+      message: mes,
       timestamp: Date.now(),
     };
     return log;
   }
+
+  public getAllLogs(): LogType[] {
+    const logs = [];
+    this.logLocations.forEach((logLocation) => {
+      logs.push(logLocation.getAllLogs());
+    });
+    return logs;
+  }
+
+  public getLogsByLevel(level: LevelUsageType): LogType[] {
+    const logs = [];
+    this.logLocations.forEach((logLocation) => {
+      logs.push(logLocation.getLogByLevel(level));
+    });
+    return logs;
+  }
+
+  public getLogsByMessage(message: string): LogType[] {
+    const logs = [];
+    this.logLocations.forEach((logLocation) => {
+      logs.push(logLocation.getLogByMessage(message));
+    });
+    return logs;
+  }
+
+  public getLogsByTimestamp(timestamp: number): LogType[] {
+    const logs = [];
+    this.logLocations.forEach((logLocation) => {
+      logs.push(logLocation.getLogByTimestamp(timestamp));
+    });
+    return logs;
+  }
+
+  public getLogsByTimestampRange(
+    startTimestamp: number,
+    endTimestamp: number
+  ): LogType[] {
+    const logs = [];
+    this.logLocations.forEach((logLocation) => {
+      logs.push(
+        logLocation.getLogByTimestampRange(startTimestamp, endTimestamp)
+      );
+    });
+    return logs;
+  }
 }
 
-//TODO: Need to add logLocation support
-//TODO: Will be used from Logger, and will hold the LogLocations, aka the loggers. Each logger will hold each logs.
+interface LogInformation {
+  level: LevelUsageType;
+}

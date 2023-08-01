@@ -1,5 +1,5 @@
-import {getLogLevelName} from '../../constants/LogLevels';
-import {LogLevelUsageType, LogType} from '../../types/logManager';
+import {getLevelName} from '../../constants/Levels';
+import {LevelUsageType, LogType} from '../../types/logManager';
 import {Singleton} from '../../utils/Singleton';
 
 export class FormatManager extends Singleton<FormatManager> {
@@ -9,7 +9,7 @@ export class FormatManager extends Singleton<FormatManager> {
     super();
 
     const DEFAULT_FORMAT =
-      '%{silver}[%{teal}%{timestamp}%{silver}] %{silver}[%{uppercase}%{logLevel}%{silver}]%{reset} %{message}';
+      '${silver}[${teal}${timestamp}${silver}] ${silver}[${uppercase}${level}${silver}]${reset} ${message}';
     this.format = DEFAULT_FORMAT;
   }
 
@@ -24,13 +24,13 @@ export class FormatManager extends Singleton<FormatManager> {
   public formatMessage(log: LogType): string {
     const message = this.format
       .replace(
-        /%\{timestamp\}/g,
+        /\${timestamp\}/g,
         this.formatTimestamp(log.timestamp.toString())
       )
-      .replace(/%\{logLevel\}/g, log.logLevel.toString())
+      .replace(/\${level\}/g, log.level.toString())
       .replace(
-        /%\{message\}/g,
-        getLogLevelName(log.message as LogLevelUsageType).toString()
+        /\${message\}/g,
+        getLevelName(log.message as LevelUsageType).toString()
       );
     return message;
   }

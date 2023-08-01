@@ -1,6 +1,6 @@
 import Logger from '../Logger';
 import {TransportFunction} from '../types/logLocation';
-import {LogType} from '../types/logManager';
+import {LevelUsageType, LogType} from '../types/logManager';
 
 export function transport(): ClassDecorator {
   return function (target: Function) {
@@ -42,6 +42,28 @@ export abstract class LogLocation {
 
   public getRecentLog(): LogType {
     return this.logs[this.logs.length - 1];
+  }
+
+  public getAllLogs(): LogType[] {
+    return this.logs;
+  }
+
+  public getLogByLevel(level: LevelUsageType): LogType[] {
+    return this.logs.filter((log) => log.level === level);
+  }
+
+  public getLogByMessage(message: string): LogType[] {
+    return this.logs.filter((log) => log.message === message);
+  }
+
+  public getLogByTimestamp(timestamp: number): LogType[] {
+    return this.logs.filter((log) => log.timestamp === timestamp);
+  }
+
+  public getLogByTimestampRange(start: number, end: number): LogType[] {
+    return this.logs.filter(
+      (log) => log.timestamp >= start && log.timestamp <= end
+    );
   }
 }
 

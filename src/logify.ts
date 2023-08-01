@@ -2,28 +2,70 @@ import Logger from './Logger';
 import {LogCluster} from './modules/logCluster';
 import {ConsoleTransport, FileTransport} from './modules/logLocation';
 import {ColorManager} from './modules/log-modifiers';
-import {LOG_LEVELS} from './constants/LogLevels';
-/*
+import {LOG_LEVELS} from './constants/Levels';
+import {LogOptionsBuilder} from './modules/logOptionsBuilder';
+import {LogType} from './types/logManager';
+
 const logger = new Logger();
 
 logger.configure({
-  logLevel: LOG_LEVELS.FATAL,
+  defaultLogLevel: LOG_LEVELS.INFO,
+  levelFilter: LOG_LEVELS.WARN,
   logLocations: [new ConsoleTransport()],
 });
+
+logger.log(
+  'asd',
+  {
+    level: LOG_LEVELS.WARN,
+  },
+  {test: 'test'}
+);
 
 const newLogCluster = new LogCluster({
   logLocations: [new ConsoleTransport()],
+  levelFilter: LOG_LEVELS.TRACE,
 });
 
-logger.log('DEBUG', 'Sending message from default log cluster.');
+logger.setDefaultLogCluster(newLogCluster);
 
-logger.setDefaultLogCluster(newLogCluster); //Setting a new logCluster as the sender.
-//logger.addLogLocation(new ConsoleTransport());
+function customLogFilter(log: LogType): boolean {
+  return log.level === 'TRACE';
+}
 
-logger.setFormat('Hello, %{red}%{message}!');
+logger.addLogFilter(customLogFilter);
 
-logger.log('INFO', 'Sending message from new log cluster.');*/
+logger.log('Sending message from new log cluster.', {
+  level: LOG_LEVELS.TRACE,
+});
+
+const customLogBuilder = new LogOptionsBuilder()
+  .setLevel(LOG_LEVELS.TRACE)
+  .build();
+
+logger.log(`Sending a example message`, customLogBuilder);
 
 const Logify = new Logger();
 
-export {Logify, ConsoleTransport, FileTransport, ColorManager, LogCluster};
+Logify.configure({
+  allowDebug: true,
+  levelFilter: LOG_LEVELS.TRACE,
+  defaultLogLevel: LOG_LEVELS.INFO,
+  logLocations: [new ConsoleTransport()],
+});
+
+Logify.log('Sending a test message.');
+
+/*
+console.log(Logify.getLogCluster().getAllLogs());
+console.log(Logify.getLogCluster().getLogsByLevel('INFO'));
+*/
+
+export {
+  Logify,
+  ConsoleTransport,
+  FileTransport,
+  ColorManager,
+  LogCluster,
+  LogOptionsBuilder,
+};

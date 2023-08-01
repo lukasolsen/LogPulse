@@ -29,14 +29,11 @@ npm install logify
 Here's a basic example of how to use Logify
 
 ```typescript
-import {Logify, LogLevel} from 'logify';
+import {Logify, Level} from 'logify';
 
 // Configure Logify
 Logify.configure({
-  logLevel: LogLevel.INFO,
-  enableContext: true,
-  enableFormatting: true,
-  enableIntelligentLogging: true,
+  level: Level.INFO,
 });
 
 // Log messages

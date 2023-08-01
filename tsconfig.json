@@ -8,6 +8,8 @@
     "allowJs": true,
     "lib": ["ES2022", "DOM"],
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["./node_modules/@types", "./src/types/"]
-  }
+    "typeRoots": ["./node_modules/@types", "./src/types/"],
+    "declaration": true
+  },
+  "include": ["./src/*"]
 }

@@ -5,6 +5,7 @@
   "main": "dist/logify.js",
   "types": "dist/logify.d.ts",
   "scripts": {
+    "test": "node ./test.js",
     "build": "tsc",
     "build-npm": "tsc",
     "build-website": "webpack --mode production",

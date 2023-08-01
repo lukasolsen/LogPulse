@@ -8,7 +8,7 @@ export function turnTextToColor(
   text: string,
   logLocation?: LogLocation
 ): TurnTextToColor {
-  const colorRegex = /%\{([a-zA-Z]+)\}/g;
+  const colorRegex = /\${([a-zA-Z1-9]+)}/g;
   let match;
   let lastIndex = 0;
   const result = {text: '', colors: []};

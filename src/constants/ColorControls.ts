@@ -1,4 +1,4 @@
-import {LogLevelUsageType} from '../types/logManager';
+import {LevelUsageType} from '../types/logManager';
 
 export const PREDEFINED_COLORS: PredefinedColorsType = {
   red: {
@@ -328,6 +328,6 @@ export const TEXT_MODIFIERS: ModifiersType = {
 
 export interface FormatOptions {
   timestamp?: string;
-  logLevel?: LogLevelUsageType;
+  level?: LevelUsageType;
   message?: string;
 }
