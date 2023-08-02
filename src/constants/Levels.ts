@@ -1,4 +1,4 @@
-import {LevelUsageType, LevelValueType} from '../types/logManager';
+import {LevelUsageType, LevelValueType} from '../types/global';
 
 export const LOG_LEVELS = {
   FATAL: 0,

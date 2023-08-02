@@ -1,4 +1,5 @@
 import {TEXT_MODIFIERS} from '../../constants/ColorControls';
+import {ModifierFormatType, ModifiersType} from '../../types/global';
 import {Singleton} from '../../utils/Singleton';
 
 export class ModifierManager extends Singleton<ModifierManager> {

@@ -1,6 +1,5 @@
-import Logger from '../Logger';
-import {TransportFunction} from '../types/logLocation';
-import {LevelUsageType, LogType} from '../types/logManager';
+import Logger from '../manager/Logger';
+import {TransportFunction, LogType, LevelUsageType} from '../types/global';
 
 export function transport(): ClassDecorator {
   return function (target: Function) {

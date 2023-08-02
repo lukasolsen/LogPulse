@@ -1,4 +1,8 @@
-import {LevelUsageType} from '../types/logManager';
+import {
+  LevelUsageType,
+  ModifiersType,
+  PredefinedColorsType,
+} from '../types/global';
 
 export const PREDEFINED_COLORS: PredefinedColorsType = {
   red: {

@@ -1,4 +1,4 @@
-import {LevelUsageType, LogOptions} from '../types/logManager';
+import {LevelUsageType, LogOptions} from '../types/global';
 
 export class LogOptionsBuilder {
   private options: LogOptions;

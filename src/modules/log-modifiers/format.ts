@@ -1,5 +1,5 @@
-import {getLevelName} from '../../constants/Levels';
-import {LevelUsageType, LogType} from '../../types/logManager';
+import {LevelUsageType, getLevelName} from '../../constants/Levels';
+import {LogType} from '../../types/global';
 import {Singleton} from '../../utils/Singleton';
 
 export class FormatManager extends Singleton<FormatManager> {

@@ -1,5 +1,4 @@
-import {TurnTextToColor} from '../types/color';
-import {LogType} from '../types/logManager';
+import {LogType, TurnTextToColor} from '../types/global';
 import {isBrowser, isNode} from '../utils/Common';
 import {ColorManager, ModifierManager, FormatManager} from './log-modifiers';
 import {LogLocation} from './logLocation';

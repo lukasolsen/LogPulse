@@ -1,8 +1,16 @@
-import {ConsoleTransport, LogLocation} from './logLocation';
-import {LogOptions, LogType, LoggerOptionsType} from '../types/logManager';
-import {LevelUsageType} from '../types/logManager';
-import {LOG_LEVELS, generateUniqueID, getLevelName} from '../constants/Levels';
-import {formatTextAllDependencies} from './log-modifier';
+import {ConsoleTransport, LogLocation} from '../modules/logLocation';
+import {LOG_LEVELS} from '../constants/Levels';
+import {formatTextAllDependencies} from '../modules/log-modifier';
+import {
+  LevelUsageType,
+  LogHandleOptions,
+  LogInformation,
+  LogOptions,
+  LogType,
+  LoggerOptionsType,
+} from '../types/global';
+import {convertArgsToOptions} from '../services/BetterOptions';
+import {generateLogData} from '../services/logService';
 
 class LogFilterManager {
   private filters: ((log: LogType, ...args: any[]) => boolean)[];
@@ -46,18 +54,14 @@ export class LogCluster {
   public log(message: string, logOptions?: LogOptions, ...args: any[]): void {
     logOptions = logOptions || {};
 
-    // Type assertion to ensure logOptions.level has the correct type
     logOptions.level =
       logOptions.level || (this.defaultLogInformation.level as LevelUsageType);
 
     if (this.checkLevelFilter(logOptions.level)) return;
 
-    const log = this.generateLogData(
-      logOptions.level,
-      message,
-      logOptions,
-      ...args
-    );
+    const options: LogHandleOptions = convertArgsToOptions(...args);
+
+    const log = generateLogData(logOptions.level, message, options, ...args);
     const {text, colors} = formatTextAllDependencies(log);
     if (!this.filterManager.useFilter(log, ...args)) return;
 
@@ -97,34 +101,6 @@ export class LogCluster {
 
   public addLogFilter(filter: (log: LogType, ...args: any[]) => boolean): void {
     this.filterManager.addFilter(filter);
-  }
-
-  private generateLogData(
-    level: LevelUsageType,
-    message: string,
-    options?: LogOptions,
-    ...args: any[]
-  ): LogType {
-    options = options || {};
-    level = getLevelName(level);
-
-    let stringified = JSON.stringify(args);
-    stringified = stringified.replace(/"/g, '');
-    stringified = stringified.replace(stringified.charAt(0), '');
-    stringified = stringified.replace(
-      stringified.charAt(stringified.length - 1),
-      ''
-    );
-
-    const mes = message + ' ' + stringified;
-
-    const log: LogType = {
-      id: generateUniqueID(),
-      level: level,
-      message: mes,
-      timestamp: Date.now(),
-    };
-    return log;
   }
 
   public getAllLogs(): LogType[] {
@@ -171,8 +147,4 @@ export class LogCluster {
     });
     return logs;
   }
-}
-
-interface LogInformation {
-  level: LevelUsageType;
 }
