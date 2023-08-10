@@ -4,7 +4,7 @@
     "sourceMap": true,
     "outDir": "./dist/",
     "module": "CommonJS",
-    "target": "ES2022",
+    "target": "ES6",
     "allowJs": true,
     "lib": ["ES2022", "DOM"],
     "forceConsistentCasingInFileNames": true,
@@ -22,5 +22,11 @@
     "*.js",
     ".prettierrc",
     "tsconfig.json"
-  ]
+  ],
+  "ts-node": {
+    "esm": false,
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 }

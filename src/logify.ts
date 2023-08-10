@@ -5,7 +5,6 @@ import {LogOptionsBuilder} from './modules/logOptionsBuilder';
 import {ConsoleTransport} from './modules/locations/ConsoleTransport';
 import {FileTransport} from './modules/locations/FileTransport';
 import {ColorManager} from './modules/modifications';
-import Helper from './modules/ai';
 
 const logger = new Logger();
 
@@ -14,20 +13,13 @@ logger.configure({
   levelFilter: LOG_LEVELS.WARN,
   logLocations: [new ConsoleTransport()],
   allowDebug: false,
-  allowJSON: false,
+  allowJSON: true,
+  allowSummary: true,
 });
 
 //logger.info('An info message', {info: 'Sample Info', info2: logger});
 //logger.trace('A trace message', {trace: 'Sample Trace'});
-/*logger.info(`An error message`, 'asdasd');
-
-const helper = new Helper();
-
-console.log(
-  helper.summarizeMessage(
-    'An error occurred while making processing transaction ID 12345.'
-  )
-);*/
+logger.info(`An error message`, {error: 'Sample Error'});
 
 const Logify = new Logger();
 

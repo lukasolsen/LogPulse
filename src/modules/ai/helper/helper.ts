@@ -1,17 +1,43 @@
-import {WordTokenizer} from 'natural';
+import {HfInference} from '@huggingface/inference';
+import 'dotenv/config';
 
 class Helper {
-  private wordTokenizer: WordTokenizer;
+  static instance: Helper;
+  private model: any;
+  private inference: any;
 
-  constructor() {
-    this.wordTokenizer = new WordTokenizer();
+  constructor(huggingFaceToken?: string) {
+    this.inference = new HfInference(huggingFaceToken);
   }
 
-  public summarizeMessage(message: string, maxTokens = 5): string {
-    const tokens = this.wordTokenizer.tokenize(message);
-    const summary = tokens.slice(0, maxTokens).join(' ');
-    return summary;
+  static getInstance(huggingFaceToken: string): Helper {
+    if (!this.instance) {
+      this.instance = new Helper(huggingFaceToken);
+    }
+    return this.instance;
+  }
+
+  async summarizeMessage(message: string): Promise<string> {
+    const summary = await this.generateSummary(message);
+
+    return await summary.summary_text; // Return the summary_text from the output
+  }
+
+  async generateSummary(inputText: string): Promise<any> {
+    //const output = await this.model(inputText);
+    if (inputText === '') {
+      return;
+    }
+    const output = await this.inference.summarization({
+      inputs: inputText,
+      parameters: {
+        max_length: 100,
+        min_length: 1,
+        early_stopping: true,
+      },
+    });
+
+    return output;
   }
 }
-
 export {Helper};

@@ -19,6 +19,8 @@ export interface LoggerOptionsType {
   logCluster?: LogCluster;
   allowDebug?: boolean;
   allowJSON?: boolean;
+  allowSummary?: boolean;
+  huggingFaceToken?: string;
 }
 
 export interface LogOptions {
@@ -31,6 +33,7 @@ export type LogType = {
   message: string;
   timestamp: number;
   data?: LogHandleOptions;
+  summary?: any;
 };
 
 /**

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {LogCluster} from './logCluster';
 import {LogLocation} from '../modules/logLocation';
 import {LevelUsageType, LogOptions, LoggerOptionsType} from '../types/global';
@@ -45,6 +46,13 @@ export class Logger {
     this.logCluster.addLogLocation(logLocation);
   }
 
+  /**
+   * Configure the logger with options
+   * @param options LoggerOptionsType
+   * @returns void
+   * @option allowSummary - Allow the logger to print a summary of the logs ? requires `allowJSON` to be true and `huggingFaceToken` to be set
+   * @option huggingFaceToken - The token to use for the HuggingFace API (https://huggingface.co/)
+   */
   public configure(options: LoggerOptionsType): void {
     this.logCluster.configure(options);
   }

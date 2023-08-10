@@ -13,6 +13,7 @@ import {ConsoleTransport} from '../modules/locations/ConsoleTransport';
 import {FormatManager} from '../modules/modifications';
 
 import LogFilterManager from '../modules/filters/Filter';
+import Helper from '../modules/ai';
 
 export class LogCluster {
   private logLocations: LogLocation[];
@@ -21,7 +22,7 @@ export class LogCluster {
   private filterManager: LogFilterManager;
   private formatManager: FormatManager;
 
-  private allowJSON: boolean;
+  private options: LoggerOptionsType;
 
   constructor(options?: LoggerOptionsType) {
     this.logLocations = options?.logLocations || [new ConsoleTransport()];
@@ -31,7 +32,7 @@ export class LogCluster {
     this.levelFilter = options?.levelFilter ?? LOG_LEVELS.INFO;
     this.filterManager = new LogFilterManager(this.defaultLogInformation || {});
     this.formatManager = FormatManager.getInstance();
-    this.allowJSON = options?.allowJSON || false;
+    this.options = options || {};
   }
 
   public log(message: string, logOptions?: LogOptions, ...args: any[]): void {
@@ -46,8 +47,12 @@ export class LogCluster {
     const {text, colors} = formatTextAllDependencies(log);
     if (!this.filterManager.useFilter(log, ...args)) return;
 
-    if (this.allowJSON && this.logLocations.length !== 0) {
+    if (this.options.allowJSON && this.logLocations.length !== 0) {
       log.message = text;
+      if (this.options.allowSummary) {
+        console.log(text);
+        log.summary = this.summarize(text);
+      }
       console.log(JSON.stringify(log, null, 2));
     }
 
@@ -55,6 +60,14 @@ export class LogCluster {
       logLocation.log(text, colors, logOptions);
       logLocation.addLog(log);
     });
+  }
+
+  async summarize(message: string): Promise<string> {
+    //const summary = await Helper.getInstance().summarizeMessage(message);
+    const summary = new Promise<string>((resolve, reject) => {
+      resolve(message);
+    });
+    return await summary;
   }
 
   public addLogLocation(logLocation: LogLocation | LogLocation[]): void {
@@ -75,7 +88,7 @@ export class LogCluster {
 
     // Set the level filter based on the allowDebug property if provided
     this.levelFilter = options.allowDebug ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO;
-    this.allowJSON = options.allowJSON || false;
+    this.options = options;
   }
 
   private checkLevelFilter(level: LevelUsageType): boolean {
