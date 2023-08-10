@@ -1,7 +1,7 @@
 import {LOG_LEVELS} from '../constants/Levels';
-import {LogCluster} from '../manager/logCluster';
+import {LogCluster} from '../core/logCluster';
 import {LogLocation} from '../modules/logLocation';
-import Logger from '../manager/Logger';
+import Logger from '../core/Logger';
 
 /**
  * logManager.d.ts
@@ -18,6 +18,7 @@ export interface LoggerOptionsType {
   logLocations?: LogLocation[];
   logCluster?: LogCluster;
   allowDebug?: boolean;
+  allowJSON?: boolean;
 }
 
 export interface LogOptions {

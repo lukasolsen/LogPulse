@@ -1,46 +1,27 @@
-import {ConsoleTransport, LogLocation} from '../modules/logLocation';
+import {LogLocation} from '../modules/logLocation';
 import {LOG_LEVELS} from '../constants/Levels';
 import {formatTextAllDependencies} from '../modules/log-modifier';
 import {
   LevelUsageType,
-  LogHandleOptions,
   LogInformation,
   LogOptions,
   LogType,
   LoggerOptionsType,
 } from '../types/global';
-import {convertArgsToOptions} from '../services/BetterOptions';
 import {generateLogData} from '../services/logService';
+import {ConsoleTransport} from '../modules/locations/ConsoleTransport';
+import {FormatManager} from '../modules/modifications';
 
-class LogFilterManager {
-  private filters: ((log: LogType, ...args: any[]) => boolean)[];
-  private defaultLogOptions: LogOptions;
-
-  constructor(defaultLogOptions: LogOptions) {
-    this.filters = [];
-    this.defaultLogOptions = defaultLogOptions;
-  }
-
-  public addFilter(filter: (log: LogType, ...args: any[]) => boolean): void {
-    this.filters.push(filter);
-  }
-
-  public applyFilters(log: LogType, ...args: any[]): boolean {
-    return this.filters.every((filter) => filter(log, ...args));
-  }
-
-  public useFilter(log: LogType, ...args: any[]): boolean {
-    const filters = this.applyFilters(log, ...args);
-
-    return filters;
-  }
-}
+import LogFilterManager from '../modules/filters/Filter';
 
 export class LogCluster {
   private logLocations: LogLocation[];
   private defaultLogInformation: LogInformation;
   private levelFilter: LevelUsageType;
   private filterManager: LogFilterManager;
+  private formatManager: FormatManager;
+
+  private allowJSON: boolean;
 
   constructor(options?: LoggerOptionsType) {
     this.logLocations = options?.logLocations || [new ConsoleTransport()];
@@ -49,6 +30,8 @@ export class LogCluster {
     };
     this.levelFilter = options?.levelFilter ?? LOG_LEVELS.INFO;
     this.filterManager = new LogFilterManager(this.defaultLogInformation || {});
+    this.formatManager = FormatManager.getInstance();
+    this.allowJSON = options?.allowJSON || false;
   }
 
   public log(message: string, logOptions?: LogOptions, ...args: any[]): void {
@@ -59,14 +42,17 @@ export class LogCluster {
 
     if (this.checkLevelFilter(logOptions.level)) return;
 
-    const options: LogHandleOptions = convertArgsToOptions(...args);
-
-    const log = generateLogData(logOptions.level, message, options, ...args);
+    const log = generateLogData(logOptions.level, message, ...args);
     const {text, colors} = formatTextAllDependencies(log);
     if (!this.filterManager.useFilter(log, ...args)) return;
 
+    if (this.allowJSON && this.logLocations.length !== 0) {
+      log.message = text;
+      console.log(JSON.stringify(log, null, 2));
+    }
+
     this.logLocations.forEach((logLocation) => {
-      logLocation.log(text, colors);
+      logLocation.log(text, colors, logOptions);
       logLocation.addLog(log);
     });
   }
@@ -89,14 +75,15 @@ export class LogCluster {
 
     // Set the level filter based on the allowDebug property if provided
     this.levelFilter = options.allowDebug ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO;
+    this.allowJSON = options.allowJSON || false;
   }
 
   private checkLevelFilter(level: LevelUsageType): boolean {
     return level > this.levelFilter;
   }
 
-  public setFormat(format: string): void {
-    // Implement the setFormat logic here or delegate it to LogLocation(s)
+  public setGlobalFormat(format: string): void {
+    this.formatManager.setGlobalFormat(format);
   }
 
   public addLogFilter(filter: (log: LogType, ...args: any[]) => boolean): void {
@@ -146,5 +133,9 @@ export class LogCluster {
       );
     });
     return logs;
+  }
+
+  public setFormat(level: LevelUsageType, format: string) {
+    this.formatManager.setLevelFormat(level, format);
   }
 }

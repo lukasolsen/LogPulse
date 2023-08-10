@@ -1,6 +1,6 @@
 import {LogCluster} from './logCluster';
 import {LogLocation} from '../modules/logLocation';
-import {LogOptions, LoggerOptionsType} from '../types/global';
+import {LevelUsageType, LogOptions, LoggerOptionsType} from '../types/global';
 
 export class Logger {
   private logCluster: LogCluster;
@@ -53,8 +53,8 @@ export class Logger {
     this.logCluster = logCluster;
   }
 
-  public setFormat(format: string): void {
-    this.logCluster.setFormat(format);
+  public setGlobalFormat(format: string): void {
+    this.logCluster.setGlobalFormat(format);
   }
 
   public addLogFilter(fn: (...args: any[]) => boolean): void {
@@ -63,6 +63,10 @@ export class Logger {
 
   public getLogCluster(): LogCluster {
     return this.logCluster;
+  }
+
+  public setFormat(level: LevelUsageType, format: string) {
+    this.logCluster.setFormat(level, format);
   }
 }
 

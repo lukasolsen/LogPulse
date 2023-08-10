@@ -17,7 +17,8 @@
     "no-invalid-this": "off",
     "no-invalid-regexp": "off",
     "max-len": ["error", {"code": 120}],
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   },
   "ignorePatterns": ["node_modules/", "dist/"],
   "root": true

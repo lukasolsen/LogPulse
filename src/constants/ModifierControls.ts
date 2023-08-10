@@ -328,6 +328,10 @@ export const TEXT_MODIFIERS: ModifiersType = {
     css: 'visibility: hidden',
     ansi: '\u001b[8m',
   },
+  indent: {
+    css: 'text-indent: 2em',
+    ansi: '\t',
+  },
 } as const;
 
 export interface FormatOptions {

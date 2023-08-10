@@ -1,6 +1,10 @@
 import {LogType, TurnTextToColor} from '../types/global';
 import {isBrowser, isNode} from '../utils/Common';
-import {ColorManager, ModifierManager, FormatManager} from './log-modifiers';
+import {
+  ModifierManager,
+  ColorManager,
+  FormatManager,
+} from '../modules/modifications';
 import {LogLocation} from './logLocation';
 
 export function turnTextToColor(

@@ -12,5 +12,15 @@
     "declaration": true,
     "noImplicitAny": false
   },
-  "include": ["./src/*", "src/manager/Logger.ts"]
+  "include": ["**/*", "package", "README", "LICENSE", "package-lock"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "templates",
+    ".gitignore",
+    ".vscode",
+    "*.js",
+    ".prettierrc",
+    "tsconfig.json"
+  ]
 }
