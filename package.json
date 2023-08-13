@@ -32,8 +32,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@huggingface/inference": "^2.6.1",
-    "@tensorflow/tfjs": "^4.10.0"
+    "@huggingface/inference": "^2.6.1"
   },
   "auto-changelog": {
     "output": "CHANGELOG.md",
