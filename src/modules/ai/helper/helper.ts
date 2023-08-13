@@ -10,7 +10,6 @@ class Helper {
     } catch (e) {
       console.trace('Failed to login into HuggingFace');
     }
-    //this.inference = new HfInference(huggingFaceToken);
   }
 
   static getInstance(huggingFaceToken: string): Helper {

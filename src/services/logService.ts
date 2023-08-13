@@ -1,6 +1,6 @@
 import {generateUniqueID, getLevelName} from '../constants/Levels';
 import {LevelUsageType, LogType} from '../types/global';
-import {convertArgsToOptions, convertArgsToText} from './TextConverer';
+import {convertArgsToOptions, supportText} from './TextConverer';
 
 function generateLogData(
   level: LevelUsageType,
@@ -9,8 +9,8 @@ function generateLogData(
 ): LogType {
   level = getLevelName(level);
 
-  let mes = message;
-  mes += ' ' + convertArgsToText(args);
+  let mes = supportText(message);
+  mes += ' ' + supportText(args);
 
   const handleOptions = convertArgsToOptions(args);
 
@@ -20,7 +20,6 @@ function generateLogData(
     message: mes,
     timestamp: Date.now(),
     data: handleOptions,
-    
   };
 
   return log;

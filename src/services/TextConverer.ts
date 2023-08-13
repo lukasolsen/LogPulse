@@ -1,6 +1,6 @@
 import {LogHandleOptions} from '../types/global';
 
-function convertArgsToOptions(...args: any[]) {
+function convertArgsToOptions(...args: any[]): LogHandleOptions {
   const options: LogHandleOptions = {};
 
   if (args.length === 0) return options;
@@ -16,10 +16,10 @@ function convertArgsToOptions(...args: any[]) {
 
         break;
       case 'object':
-        //Check if it's an Error or Date object using switch and case
+        // Check if it's an Error or Date object using switch and case
         const keys = Object.keys(arg);
 
-        //Loop around each key and check if it's an Error or Date object
+        // Loop around each key and check if it's an Error or Date object
         keys.forEach((key) => {
           switch (arg[key].constructor.name) {
             case 'Error':
@@ -41,7 +41,7 @@ function convertArgsToOptions(...args: any[]) {
   return options;
 }
 
-function convertArgsToText(args: any[]): string {
+function supportText(text: any[] | any): string {
   function stringify(arg: any, indent: string = ''): string {
     if (typeof arg === 'object' && arg !== null) {
       if (arg instanceof Error) {
@@ -64,8 +64,11 @@ function convertArgsToText(args: any[]): string {
     }
   }
 
-  const argsAsText = args.map((arg) => stringify(arg));
-  return argsAsText.join(' ');
+  const textAsString = Array.isArray(text)
+    ? text.map((arg) => stringify(arg)).join(' ')
+    : stringify(text);
+
+  return textAsString;
 }
 
-export {convertArgsToOptions, convertArgsToText};
+export {convertArgsToOptions, supportText};
