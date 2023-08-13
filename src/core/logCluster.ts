@@ -14,6 +14,7 @@ import {FormatManager} from '../modules/modifications';
 
 import LogFilterManager from '../modules/filters/Filter';
 import Helper from '../modules/ai';
+import {TagController} from '../services/TagService';
 
 export class LogCluster {
   private logLocations: LogLocation[];
@@ -23,6 +24,7 @@ export class LogCluster {
   private formatManager: FormatManager;
 
   private options: LoggerOptionsType;
+  private tagService: TagController;
 
   constructor(options?: LoggerOptionsType) {
     this.logLocations = options?.logLocations || [new ConsoleTransport()];
@@ -33,9 +35,14 @@ export class LogCluster {
     this.filterManager = new LogFilterManager(this.defaultLogInformation || {});
     this.formatManager = FormatManager.getInstance();
     this.options = options || {};
+    this.tagService = new TagController();
   }
 
-  public log(message: string, logOptions?: LogOptions, ...args: any[]): void {
+  public async log(
+    message: any,
+    logOptions?: LogOptions,
+    ...args: any[]
+  ): Promise<void> {
     logOptions = logOptions || {};
 
     logOptions.level =
@@ -44,6 +51,7 @@ export class LogCluster {
     if (this.checkLevelFilter(logOptions.level)) return;
 
     const log = generateLogData(logOptions.level, message, ...args);
+    log.tag = this.tagService.getEnabledTag();
     const {text, colors} = formatTextAllDependencies(log);
     if (!this.filterManager.useFilter(log, ...args)) return;
 
@@ -51,7 +59,7 @@ export class LogCluster {
       log.message = text;
       if (this.options.allowSummary) {
         console.log(text);
-        log.summary = this.summarize(text);
+        log.summary = await this.summarize(message);
       }
       console.log(JSON.stringify(log, null, 2));
     }
@@ -62,11 +70,27 @@ export class LogCluster {
     });
   }
 
+  public setTag(tag: string) {
+    this.tagService.addTag(tag);
+    this.tagService.enableTag(tag);
+  }
+
+  public enableTag(tag: string) {
+    this.tagService.enableTag(tag);
+  }
+
+  public disableTag() {
+    this.tagService.disableTag();
+  }
+
+  public removeTag(tag: string) {
+    this.tagService.removeTag(tag);
+  }
+
   async summarize(message: string): Promise<string> {
-    //const summary = await Helper.getInstance().summarizeMessage(message);
-    const summary = new Promise<string>((resolve, reject) => {
-      resolve(message);
-    });
+    const summary = await Helper.getInstance(
+      this.options.huggingFaceToken
+    ).summarizeMessage(message);
     return await summary;
   }
 
@@ -123,6 +147,14 @@ export class LogCluster {
     const logs = [];
     this.logLocations.forEach((logLocation) => {
       logs.push(logLocation.getLogByMessage(message));
+    });
+    return logs;
+  }
+
+  public getLogsByTag(tag: string): LogType[] {
+    const logs = [];
+    this.logLocations.forEach((logLocation) => {
+      logs.push(logLocation.getLogByTag(tag));
     });
     return logs;
   }

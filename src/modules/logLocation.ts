@@ -61,4 +61,8 @@ export abstract class LogLocation {
       (log) => log.timestamp >= start && log.timestamp <= end
     );
   }
+
+  public getLogByTag(tag: string): LogType[] {
+    return this.logs.filter((log) => log.tag === tag);
+  }
 }

@@ -11,34 +11,42 @@ export class Logger {
   }
 
   public log(
-    message: string,
+    message: any,
     logOptions?: LogOptions,
     ...data: any[] | any
   ): void {
     this.logCluster.log(message, logOptions, ...data);
   }
 
-  public info(message: string, ...data: any[]): void {
+  public info(message: any, ...data: any[]): void {
     this.logCluster.log(message, {level: 'INFO'}, ...data);
   }
 
-  public warn(message: string, ...data: any[]): void {
+  public setTag(tag: string): void {
+    this.logCluster.setTag(tag);
+  }
+
+  public removeTag(tag: string): void {
+    this.logCluster.removeTag(tag);
+  }
+
+  public warn(message: any, ...data: any[]): void {
     this.logCluster.log(message, {level: 'WARN'}, ...data);
   }
 
-  public error(message: string, ...data: any[]): void {
+  public error(message: any, ...data: any[]): void {
     this.logCluster.log(message, {level: 'ERROR'}, ...data);
   }
 
-  public debug(message: string, ...data: any[]): void {
+  public debug(message: any, ...data: any[]): void {
     this.logCluster.log(message, {level: 'DEBUG'}, ...data);
   }
 
-  public fatal(message: string, ...data: any[]): void {
+  public fatal(message: any, ...data: any[]): void {
     this.logCluster.log(message, {level: 'FATAL'}, ...data);
   }
 
-  public trace(message: string, ...data: any[]): void {
+  public trace(message: any, ...data: any[]): void {
     this.logCluster.log(message, {level: 'TRACE'}, ...data);
   }
 

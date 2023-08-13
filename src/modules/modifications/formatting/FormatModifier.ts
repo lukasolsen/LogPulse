@@ -69,7 +69,9 @@ export class FormatManager extends Singleton<FormatManager> {
         /\${error.cause\}/g,
         log.data.error ? JSON.stringify(log.data.error.cause) : ''
       )
-      .replaceAll(/\${data\}/g, log.data.data ? log.data.data : '');
+      .replaceAll(/\${tag\}/g, log.tag ? log.tag : '')
+      .replaceAll(/\${id\}/g, log.id)
+      .replaceAll(/\${reset\}/g, '\x1b[0m');
 
     return message;
   }

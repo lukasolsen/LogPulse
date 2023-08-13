@@ -34,15 +34,8 @@ export type LogType = {
   timestamp: number;
   data?: LogHandleOptions;
   summary?: any;
+  tag?: string;
 };
-
-/**
- * // logManager.d.ts
- */
-
-/**
- * logCluster.d.ts
- */
 
 export type HexType = string;
 export type ANSIType = string;

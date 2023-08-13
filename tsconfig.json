@@ -2,7 +2,7 @@
   "display": "Node 18",
   "compilerOptions": {
     "sourceMap": true,
-    "outDir": "./dist/",
+    "outDir": "./logify/",
     "module": "CommonJS",
     "target": "ES6",
     "allowJs": true,
@@ -12,7 +12,14 @@
     "declaration": true,
     "noImplicitAny": false
   },
-  "include": ["**/*", "package", "README", "LICENSE", "package-lock"],
+
+  "include": [
+    "**/*",
+    "./package.json",
+    "./README.md",
+    "./LICENSE.txt",
+    "./src/**/*"
+  ],
   "exclude": [
     "node_modules",
     "dist",

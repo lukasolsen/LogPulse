@@ -1,5 +1,5 @@
 import {generateUniqueID, getLevelName} from '../constants/Levels';
-import {LevelUsageType, LogType} from '../types/global.d';
+import {LevelUsageType, LogType} from '../types/global';
 import {convertArgsToOptions, convertArgsToText} from './TextConverer';
 
 function generateLogData(
@@ -20,6 +20,7 @@ function generateLogData(
     message: mes,
     timestamp: Date.now(),
     data: handleOptions,
+    
   };
 
   return log;
