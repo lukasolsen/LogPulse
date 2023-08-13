@@ -1,5 +1,6 @@
-import {TEXT_MODIFIERS} from '../../constants/ColorControls';
-import {Singleton} from '../../utils/Singleton';
+import {TEXT_MODIFIERS} from '../../../constants/ModifierControls';
+import {ModifierFormatType, ModifiersType} from '../../../types/global';
+import {Singleton} from '../../../utils/Singleton';
 
 export class ModifierManager extends Singleton<ModifierManager> {
   private modifiers: ModifiersType[];
@@ -21,7 +22,7 @@ export class ModifierManager extends Singleton<ModifierManager> {
     });
   }
 
-  public addModifier(name: string, style: string): void {
+  public addModifier(name: string): void {
     if (
       this.modifiers.find(
         (modifier) => (modifier as unknown as string) === name

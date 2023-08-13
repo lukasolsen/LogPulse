@@ -1,14 +1,17 @@
-import {TurnTextToColor} from '../types/color';
-import {LogType} from '../types/logManager';
+import {LogType, TurnTextToColor} from '../types/global';
 import {isBrowser, isNode} from '../utils/Common';
-import {ColorManager, ModifierManager, FormatManager} from './log-modifiers';
+import {
+  ModifierManager,
+  ColorManager,
+  FormatManager,
+} from '../modules/modifications';
 import {LogLocation} from './logLocation';
 
 export function turnTextToColor(
   text: string,
   logLocation?: LogLocation
 ): TurnTextToColor {
-  const colorRegex = /%\{([a-zA-Z]+)\}/g;
+  const colorRegex = /\${([a-zA-Z1-9]+)}/g;
   let match;
   let lastIndex = 0;
   const result = {text: '', colors: []};

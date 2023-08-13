@@ -1,6 +1,12 @@
-import {ConsoleTransport, LogLocation} from '../logLocation';
-import {Singleton} from '../../utils/Singleton';
-import {PREDEFINED_COLORS} from '../../constants/ColorControls';
+import {LogLocation} from '../../logLocation';
+import {Singleton} from '../../../utils/Singleton';
+import {PREDEFINED_COLORS} from '../../../constants/ModifierControls';
+import {
+  Color,
+  ColorFormatType,
+  PredefinedColorsType,
+} from '../../../types/global';
+import {ConsoleTransport} from '../../locations/ConsoleTransport';
 
 export class ColorManager extends Singleton<ColorManager> {
   private logLocation: LogLocation;

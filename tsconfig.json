@@ -2,12 +2,38 @@
   "display": "Node 18",
   "compilerOptions": {
     "sourceMap": true,
-    "outDir": "./dist/",
+    "outDir": "./logify/",
     "module": "CommonJS",
-    "target": "ES2022",
+    "target": "ES6",
     "allowJs": true,
     "lib": ["ES2022", "DOM"],
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["./node_modules/@types", "./src/types/"]
+    "typeRoots": ["./node_modules/@types", "./src/types/"],
+    "declaration": true,
+    "noImplicitAny": false
+  },
+
+  "include": [
+    "**/*",
+    "./package.json",
+    "./README.md",
+    "./LICENSE.txt",
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "templates",
+    ".gitignore",
+    ".vscode",
+    "*.js",
+    ".prettierrc",
+    "tsconfig.json"
+  ],
+  "ts-node": {
+    "esm": false,
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
   }
 }

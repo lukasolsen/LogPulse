@@ -1,20 +1,16 @@
-import Logger from '../Logger';
-import {TransportFunction} from '../types/logLocation';
-import {LogType} from '../types/logManager';
-
-export function transport(): ClassDecorator {
-  return function (target: Function) {
-    target.prototype.addTransport = function (transportFn: TransportFunction) {
-      transportFn(this);
-    };
-  };
-}
+import {LogType, LevelUsageType, LogOptions} from '../types/global';
 
 export abstract class LogLocation {
   private id: string = this.generateId();
   private logs: LogType[] = [];
 
-  public abstract log(message: string, colors?: string[]): void;
+  public abstract log(
+    message: string,
+
+    colors?: string[],
+    options?: LogOptions
+  ): void;
+
   //Make a custom id without having to require the transport or anything making it.
 
   private generateId(): string {
@@ -43,22 +39,30 @@ export abstract class LogLocation {
   public getRecentLog(): LogType {
     return this.logs[this.logs.length - 1];
   }
-}
 
-/**
- * ConsoleTransport Transport
- */
-export class ConsoleTransport extends LogLocation {
-  public log(message: string, colors?: string[]): void {
-    console.log(message, ...colors);
+  public getAllLogs(): LogType[] {
+    return this.logs;
   }
-}
 
-/**
- * FileTransport Transport
- */
-export class FileTransport extends LogLocation {
-  public log(message: string, colors?: string[]): void {
-    throw new Error('Method not implemented.');
+  public getLogByLevel(level: LevelUsageType): LogType[] {
+    return this.logs.filter((log) => log.level === level);
+  }
+
+  public getLogByMessage(message: string): LogType[] {
+    return this.logs.filter((log) => log.message === message);
+  }
+
+  public getLogByTimestamp(timestamp: number): LogType[] {
+    return this.logs.filter((log) => log.timestamp === timestamp);
+  }
+
+  public getLogByTimestampRange(start: number, end: number): LogType[] {
+    return this.logs.filter(
+      (log) => log.timestamp >= start && log.timestamp <= end
+    );
+  }
+
+  public getLogByTag(tag: string): LogType[] {
+    return this.logs.filter((log) => log.tag === tag);
   }
 }

@@ -1,4 +1,8 @@
-import {LogLevelUsageType} from '../types/logManager';
+import {
+  LevelUsageType,
+  ModifiersType,
+  PredefinedColorsType,
+} from '../types/global';
 
 export const PREDEFINED_COLORS: PredefinedColorsType = {
   red: {
@@ -324,10 +328,14 @@ export const TEXT_MODIFIERS: ModifiersType = {
     css: 'visibility: hidden',
     ansi: '\u001b[8m',
   },
+  indent: {
+    css: 'text-indent: 2em',
+    ansi: '\t',
+  },
 } as const;
 
 export interface FormatOptions {
   timestamp?: string;
-  logLevel?: LogLevelUsageType;
+  level?: LevelUsageType;
   message?: string;
 }

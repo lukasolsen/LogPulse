@@ -3,21 +3,22 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["google", "plugin:@typescript-eslint/recommended"],
+  "extends": ["plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
     "ecmaVersion": "latest"
   },
   "rules": {
-    "indent": ["error", 2],
+    "indent": ["error", 2, {"SwitchCase": 1}],
     "linebreak-style": "off",
     "require-jsdoc": "off",
     "quote-props": "off",
     "no-invalid-this": "off",
     "no-invalid-regexp": "off",
-    "max-len": ["error", { "code": 120 }],
-    "operator-linebreak": "off"
+    "max-len": ["error", {"code": 120}],
+    "operator-linebreak": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   },
   "ignorePatterns": ["node_modules/", "dist/"],
   "root": true
