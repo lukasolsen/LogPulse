@@ -1,6 +1,6 @@
 {
-  "name": "@Logify",
-  "version": "1.0.0",
+  "name": "@lukasolsen/logify",
+  "version": "1.0.1",
   "description": "A simple logging library",
   "main": "logify/logify.js",
   "types": "logify/logify.d.ts",
@@ -41,8 +41,5 @@
     "issueUrl": "https://www.github.com/lukasolsen/logify/issues/{id}",
     "issuePattern": "[A-Z]+-\\d+",
     "unreleased": true
-  },
-  "dependencies": {
-    "@tensorflow/tfjs": "^4.10.0"
   }
 }

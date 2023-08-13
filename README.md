@@ -21,7 +21,7 @@ Logify is a versatile logging library for JavaScript and TypeScript that offers 
 Install Logify using npm:
 
 ```bash
-npm install logify
+npm install @lukasolsen/logify
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ npm install logify
 Here's a basic example of how to use Logify
 
 ```typescript
-import {Logify, Level} from 'logify';
+import {Logify, Level} from '@lukasolsen/logify';
 
 // Configure Logify
 Logify.configure({
@@ -42,7 +42,7 @@ Logify.warn('Potential security vulnerability detected');
 Logify.error('An error occurred', {error: new Error('Something went wrong')});
 ```
 
-For detailed usage instructions and advanced features, please refer to the [documentation](https://logify.dev/docs).
+For detailed usage instructions and advanced features, please refer to the [documentation](https://vipels-hub.gitbook.io/logify/).
 
 ## Contributing
 
