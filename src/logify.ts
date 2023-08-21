@@ -4,6 +4,7 @@ import {LogOptionsBuilder} from './modules/logOptionsBuilder';
 import {ConsoleTransport} from './modules/locations/ConsoleTransport';
 import {FileTransport} from './modules/locations/FileTransport';
 import {ColorManager} from './modules/modifications';
+
 /*
 const logger = new Logger();
 

@@ -58,13 +58,14 @@ export class LogCluster {
     if (this.options.allowJSON && this.logLocations.length !== 0) {
       log.message = text;
       if (this.options.allowSummary) {
-        console.log(text);
         log.summary = await this.summarize(message);
       }
       console.log(JSON.stringify(log, null, 2));
     }
 
-    this.logLocations.forEach((logLocation) => {
+    if (this.logLocations.length === 0) return;
+
+    this.logLocations?.forEach((logLocation) => {
       logLocation.log(text, colors, logOptions);
       logLocation.addLog(log);
     });
