@@ -4,6 +4,7 @@ import {LogOptionsBuilder} from './modules/logOptionsBuilder';
 import {ConsoleTransport} from './modules/locations/ConsoleTransport';
 import {FileTransport} from './modules/locations/FileTransport';
 import {ColorManager} from './modules/modifications';
+import {LOG_LEVELS} from './types';
 
 /*
 const logger = new Logger();
@@ -26,10 +27,10 @@ logger.removeTag('diamond');
 logger.info(`An error message Uncaught`);
 */
 
-const Logify = new Logger();
+const LogPulse = new Logger();
 
 export {
-  Logify,
+  LogPulse,
   ConsoleTransport,
   FileTransport,
   ColorManager,

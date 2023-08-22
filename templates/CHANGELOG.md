@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Initial development version of Logify.
+- Initial development version of LogPulse.
 
 ### Changed
 
@@ -30,9 +30,9 @@ All notable changes to this project will be documented in this file.
 
 ## Development Version - v0.1.0
 
-This is the initial development version of Logify. It is a work in progress and may contain bugs or unnecessary log bits. Use it with caution.
+This is the initial development version of LogPulse. It is a work in progress and may contain bugs or unnecessary log bits. Use it with caution.
 
-Any feedback, bug reports, or suggestions are highly appreciated. Please submit an issue on the [GitHub repository](https://github.com/lukasolsen/logify).
+Any feedback, bug reports, or suggestions are highly appreciated. Please submit an issue on the [GitHub repository](https://github.com/lukasolsen/LogPulse).
 
 ## License
 

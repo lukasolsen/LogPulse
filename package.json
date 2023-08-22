@@ -1,9 +1,9 @@
 {
-  "name": "@lukasolsen/logify",
+  "name": "@lukasolsen/logpulse",
   "version": "1.0.1",
   "description": "A simple logging library",
-  "main": "logify/logify.js",
-  "types": "logify/logify.d.ts",
+  "main": "logpulse/logpulse.js",
+  "types": "logpulse/logpulse.d.ts",
   "type": "commonjs",
   "scripts": {
     "test": "node ./test.js",
@@ -11,8 +11,8 @@
     "build-npm": "tsc",
     "build-website": "webpack --mode production",
     "dev-website": "webpack serve --mode development",
-    "dev": "nodemon --watch src/**/*.ts --exec ts-node ./src/logify.ts",
-    "start": "ts-node ./src/logify.ts"
+    "dev": "nodemon --watch src/**/*.ts --exec ts-node ./src/logpulse.ts",
+    "start": "ts-node ./src/loglogpulseify.ts"
   },
   "author": "Lukas Olsen",
   "license": "MIT",
@@ -36,9 +36,9 @@
   },
   "auto-changelog": {
     "output": "CHANGELOG.md",
-    "remote": "Logify",
+    "remote": "LogPulse",
     "handlebarsSetup": "templates/setup.js",
-    "issueUrl": "https://www.github.com/lukasolsen/logify/issues/{id}",
+    "issueUrl": "https://www.github.com/lukasolsen/logpulse/issues/{id}",
     "issuePattern": "[A-Z]+-\\d+",
     "unreleased": true
   }

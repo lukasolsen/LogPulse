@@ -1,6 +1,6 @@
-# Logify
+# LogPulse
 
-Logify is a versatile logging library for JavaScript and TypeScript that offers a range of powerful features and customization options. It provides a flexible and intelligent logging solution to enhance application development and debugging.
+LogPulse is a versatile logging library for JavaScript and TypeScript that offers a range of powerful features and customization options. It provides a flexible and intelligent logging solution to enhance application development and debugging.
 
 ## Key Features
 
@@ -14,40 +14,40 @@ Logify is a versatile logging library for JavaScript and TypeScript that offers 
 
 - **Log Visualization and Analytics:** Gain insights from log data through log aggregation, filtering, and visualization capabilities.
 
-- **Extensibility and Integration:** Easily integrate Logify into various projects and frameworks, with support for custom log targets and seamless integration with popular libraries.
+- **Extensibility and Integration:** Easily integrate LogPulse into various projects and frameworks, with support for custom log targets and seamless integration with popular libraries.
 
 ## Installation
 
-Install Logify using npm:
+Install LogPulse using npm:
 
 ```bash
-npm install @lukasolsen/logify
+npm install @lukasolsen/logpulse
 ```
 
 ## Usage
 
-Here's a basic example of how to use Logify
+Here's a basic example of how to use LogPulse
 
 ```typescript
-import {Logify, Level} from '@lukasolsen/logify';
+import {LogPulse, Level} from '@lukasolsen/logpulse';
 
-// Configure Logify
-Logify.configure({
+// Configure LogPulse
+LogPulse.configure({
   level: Level.INFO,
 });
 
 // Log messages
-Logify.info('Application started');
-Logify.warn('Potential security vulnerability detected');
-Logify.error('An error occurred', {error: new Error('Something went wrong')});
+LogPulse.info('Application started');
+LogPulse.warn('Potential security vulnerability detected');
+LogPulse.error('An error occurred', {error: new Error('Something went wrong')});
 ```
 
-For detailed usage instructions and advanced features, please refer to the [documentation](https://vipels-hub.gitbook.io/logify/).
+For detailed usage instructions and advanced features, please refer to the [documentation](https://vipels-hub.gitbook.io/Logify/).
 
 ## Contributing
 
-Contributions are welcome! If you encounter any issues or have suggestions for improvements, please submit an issue on the [GitHub repository](github.com/lukasolsen/logify).
+Contributions are welcome! If you encounter any issues or have suggestions for improvements, please submit an issue on the [GitHub repository](github.com/lukasolsen/LogPulse).
 
 ## License
 
-Logify is licensed under the [MIT License](opensource.org/license/MIT).
+LogPulse is licensed under the [MIT License](opensource.org/license/MIT).

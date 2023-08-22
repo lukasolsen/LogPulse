@@ -20,4 +20,4 @@ package-lock.json
 webpack.config.js
 src/
 templates/
-Logify*.tgz
+Logpulse*.tgz
