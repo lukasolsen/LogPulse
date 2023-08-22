@@ -13,7 +13,7 @@ import {ConsoleTransport} from '../modules/locations/ConsoleTransport';
 import {FormatManager} from '../modules/modifications';
 
 import LogFilterManager from '../modules/filters/Filter';
-import Helper from '../modules/ai';
+import {AILib} from '../modules/ai';
 import {TagController} from '../services/TagService';
 
 export class LogCluster {
@@ -89,10 +89,14 @@ export class LogCluster {
   }
 
   async summarize(message: string): Promise<string> {
-    const summary = await Helper.getInstance(
-      this.options.huggingFaceToken
-    ).summarizeMessage(message);
-    return await summary;
+    if (AILib) {
+      const summary = await AILib.getInstance(
+        this.options.huggingFaceToken
+      ).summarizeMessage(message);
+      return await summary;
+    } else {
+      return 'AI Module not installed';
+    }
   }
 
   public addLogLocation(logLocation: LogLocation | LogLocation[]): void {

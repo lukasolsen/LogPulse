@@ -6,7 +6,6 @@ import {FileTransport} from './modules/locations/FileTransport';
 import {ColorManager} from './modules/modifications';
 import {LOG_LEVELS} from './types';
 
-/*
 const logger = new Logger();
 
 logger.configure({
@@ -25,7 +24,6 @@ logger.removeTag('diamond');
 //logger.info('An info message', {info: 'Sample Info', info2: logger});
 //logger.trace('A trace message', {trace: 'Sample Trace'});
 logger.info(`An error message Uncaught`);
-*/
 
 const LogPulse = new Logger();
 
